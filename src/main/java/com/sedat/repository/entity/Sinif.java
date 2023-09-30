@@ -23,4 +23,5 @@ public class Sinif{
     private Long ogretmenId;
     @ElementCollection
     List<String> ogrenciler;
+
 }
