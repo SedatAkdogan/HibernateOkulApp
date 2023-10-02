@@ -1,42 +1,44 @@
-package com.sedat.Criteria;
+package com.sedat.repository;
 
 import com.sedat.repository.entity.Ogrenci;
 import com.sedat.util.HibernateUtility;
+
+import com.sedat.util.MyFactoryRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.Optional;
 
-public class OgrenciCriteria {
-    private EntityManager entityManager;
-    private CriteriaBuilder criteriaBuilder;
 
-    public OgrenciCriteria(){
+public class OgrenciRepository extends MyFactoryRepository<Ogrenci> {
+    EntityManager entityManager = HibernateUtility.getSessionFactory().createEntityManager();
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
-        entityManager = HibernateUtility.getSessionFactory().createEntityManager();
-        criteriaBuilder = entityManager.getCriteriaBuilder();
+    public OgrenciRepository() {
+        super(new Ogrenci());
     }
 
-    public List<Ogrenci> findAll(){
+    @Override
+    public List<Ogrenci> findAll() {
         CriteriaQuery<Ogrenci> criteria = criteriaBuilder.createQuery(Ogrenci.class);
         Root<Ogrenci> root = criteria.from(Ogrenci.class);
         criteria.select(root);
         List<Ogrenci> ogrenciList = entityManager.createQuery(criteria).getResultList();
-        ogrenciList.forEach(System.out::println);
         return ogrenciList;
     }
 
-    public Ogrenci findById(Long id){
+    @Override
+    public Optional<Ogrenci> findById(Long id) {
         CriteriaQuery<Ogrenci> criteria = criteriaBuilder.createQuery(Ogrenci.class);
         Root<Ogrenci> root = criteria.from(Ogrenci.class);
         criteria.select(root);
         criteria.where(criteriaBuilder.equal(root.get("id"),id));
         Ogrenci ogrenci = entityManager.createQuery(criteria).getSingleResult();
-        System.out.println(ogrenci);
-        return ogrenci;
-
-
+        return Optional.ofNullable(ogrenci);
     }
+
+
 }

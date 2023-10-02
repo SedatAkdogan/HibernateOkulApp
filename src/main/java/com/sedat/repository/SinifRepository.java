@@ -1,51 +1,42 @@
-package com.sedat.Criteria;
-
-
+package com.sedat.repository;
 
 import com.sedat.repository.entity.Sinif;
 import com.sedat.util.HibernateUtility;
+import com.sedat.util.ICrud;
+import com.sedat.util.MyFactoryRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.Optional;
 
-public class SinifCriteria {
+public class SinifRepository extends MyFactoryRepository<Sinif> {
+    EntityManager entityManager = HibernateUtility.getSessionFactory().createEntityManager();
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
-    private EntityManager entityManager;
-    private CriteriaBuilder criteriaBuilder;
-
-
-    public SinifCriteria() {
-
-        entityManager = HibernateUtility.getSessionFactory().createEntityManager();
-        criteriaBuilder = entityManager.getCriteriaBuilder();
+    public SinifRepository(){
+        super(new Sinif());
     }
-
-    public List<Sinif> findAll(){
+    @Override
+    public List<Sinif> findAll() {
         CriteriaQuery<Sinif> criteria = criteriaBuilder.createQuery(Sinif.class);
         Root<Sinif> root = criteria.from(Sinif.class);
         criteria.select(root);
         List<Sinif> sinifList = entityManager.createQuery(criteria).getResultList();
-        sinifList.forEach(System.out::println);
         return sinifList;
     }
 
-    public Sinif findById(Long id){
+    @Override
+    public Optional<Sinif> findById(Long id) {
         CriteriaQuery<Sinif> criteria = criteriaBuilder.createQuery(Sinif.class);
         Root<Sinif> root = criteria.from(Sinif.class);
         criteria.select(root);
         criteria.where(criteriaBuilder.equal(root.get("id"),id));
         Sinif sinif = entityManager.createQuery(criteria).getSingleResult();
-        System.out.println(sinif);
-        return sinif;
-
-
+        return Optional.ofNullable(sinif);
     }
 
 
-
 }
-
-
