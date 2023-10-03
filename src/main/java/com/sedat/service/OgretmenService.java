@@ -20,9 +20,6 @@ public class OgretmenService {
         return ogretmenRepository.save(ogretmen);
     }
 
-    public void update(Ogretmen ogretmen){
-        ogretmenRepository.update(ogretmen);
-    }
 
     public List<Ogretmen> findAll(){
         return ogretmenRepository.findAll();

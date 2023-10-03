@@ -21,9 +21,6 @@ public class SinifService {
         return sinifRepository.save(sinif);
     }
 
-    public void update(Sinif sinif){
-        sinifRepository.update(sinif);
-    }
 
     public List<Sinif> findAll(){
         return sinifRepository.findAll();

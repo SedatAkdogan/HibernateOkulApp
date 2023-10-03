@@ -19,16 +19,13 @@ public class OgrenciService {
         return ogrenciRepository.save(ogrenci);
     }
 
-    public void update(Ogrenci ogrenci){
-        ogrenciRepository.update(ogrenci);
-    }
-
     public List<Ogrenci> findAll(){
         return ogrenciRepository.findAll();
     }
     public Optional<Ogrenci> findById(Long id){
         return ogrenciRepository.findById(id);
     }
+
 
 
 }
